@@ -3,7 +3,7 @@ import axios from "axios"
 
 
 const fetchSuperHeroes = async () => {
-  return axios.get('http://localhost:4000/wrong_url')
+  return axios.get('http://localhost:4000/superheroes')
 }
 
 export const RQSuperHeroesPage = () => {
