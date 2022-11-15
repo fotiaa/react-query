@@ -7,6 +7,7 @@ export const SuperHeroesPage = () => {
 
   useEffect(() => {
     axios.get('http://localhost:4000/superheroes').then(res => {
+      console.log(res)
       setData(res.data)
       setIsLoading(false)
     })
