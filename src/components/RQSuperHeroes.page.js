@@ -8,14 +8,24 @@ const fetchSuperHeroes = async () => {
 
 export const RQSuperHeroesPage = () => {
   // first argument inside useQuery is a unique key and the second arguemnt is a fat arrow function that returns a promise.
-  const {isLoading, data, isError, error } = useQuery('super-heroes', fetchSuperHeroes,
+  const {isLoading, data, isError, error, isFetching } = useQuery('super-heroes', fetchSuperHeroes,
     {
-      staleTime:30000
+        refetchOnMount: true,
+    //  refetchOnMount: false
+    //  refetchOnMount: 'always'
+
+        refetchOnWindowFocus: true
+    //  refetchOnWindowFocus: false
+    //  refetchOnWindowFocus: 'always'
     }
   )
-// Stale time is set to 30s seconds here. In the last scenario we have seen isFetching was true after rendering
-// RQSuperHeroesPage component for the second time but when we stale time as 30s then no re-fetching will occur in the 
-// background for 30s after this component is re-rendered for the second time.
+// Default value of refetchOnMount is set to true, that means that query will refetch the data everytime componenet mounts.
+// If it is set to false then is fetching will be false after the first rendering.refetchOnMount also accepts a string 'always'.
+
+// refetchOnWindowFocus is set to true meaning anytime your tab loses focus and gains focus again background focus is 
+// reinitiated and when the reftech gets completed the UI is updated with data retrieved.
+
+  console.log({isLoading,isFetching})
 
   if(isLoading){
     return <h2>Loading...</h2>
