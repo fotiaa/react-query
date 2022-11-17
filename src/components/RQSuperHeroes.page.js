@@ -10,12 +10,13 @@ export const RQSuperHeroesPage = () => {
   // first argument inside useQuery is a unique key and the second arguemnt is a fat arrow function that returns a promise.
   const {isLoading, data, isError, error } = useQuery('super-heroes', fetchSuperHeroes,
     {
-      staleTime:30000
+      refetchInterval:2000,
+      refetchIntervalInBackground:true
     }
   )
-// Stale time is set to 30s seconds here. In the last scenario we have seen isFetching was true after rendering
-// RQSuperHeroesPage component for the second time but when we stale time as 30s then no re-fetching will occur in the 
-// background for 30s after this component is re-rendered for the second time.
+
+// refetchInterval:2000 means query will refetch every 2sec but the refetching will stop if the window loses its focus
+// but if we want to refetch data the data even if background loses its focus then set refetchIntervalInBackground to true
 
   if(isLoading){
     return <h2>Loading...</h2>
