@@ -1,9 +1,5 @@
-// Combine polling with call backs and use reFetchInterval option to fetch data every 3sec.
-// Stop the polling if the length of datanis more than 4 or if we get the error. 
-
 import { useQuery } from "react-query"
 import axios from "axios"
-import { useState } from "react"
 
 
 const fetchSuperHeroes = async () => {
@@ -12,12 +8,9 @@ const fetchSuperHeroes = async () => {
 
 export const RQSuperHeroesPage = () => {
 
-  const [interval, setInterval] = useState(3000);
-
+// React query automatically injects  the data that has been fetched or the error that has been encountered
   const onSuccess = (data) => {
-    if(data.data.length >=4 && interval === 3000)  {
-			setInterval(false);
-		} 
+    console.log("perform side effect after data fetching", data); 
   }
 
   const onError = (error) => {
@@ -28,7 +21,10 @@ export const RQSuperHeroesPage = () => {
     {
       onSuccess,
       onError,
-			refetchInterval: interval,
+      select : (data) => {
+         const superHeroNames = data.data.map( (hero) => hero.name )
+         return superHeroNames
+      }
     }
   )
 
@@ -42,14 +38,16 @@ export const RQSuperHeroesPage = () => {
   return (
     <>
       <h2>React Query Super Heroes Page</h2>
+      {/* { data?.data.map(hero =>{
+          return <div key={hero.name}> {hero.name} </div>
+      })} */}
+
       {
-        data?.data.map(hero =>{
-          return <div key={hero.name}>
-            {hero.name}
-          </div>
-        })
+        data.map( (heroName) => {
+          return <div key={heroName} > {heroName} </div>
+        } )
       }
+       
     </>
   )
 }
-
