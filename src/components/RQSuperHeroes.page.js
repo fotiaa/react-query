@@ -7,16 +7,22 @@ const fetchSuperHeroes = async () => {
 }
 
 export const RQSuperHeroesPage = () => {
-  // first argument inside useQuery is a unique key and the second arguemnt is a fat arrow function that returns a promise.
+
+// React query automatically injects  the data that has been fetched or the error that has been encountered
+  const onSuccess = (data) => {
+    console.log("perform side effect after data fetching", data); 
+  }
+
+  const onError = (error) => {
+    console.log("perform side effect after error", error ); 
+  }
+
   const {isLoading, data, isError, error } = useQuery('super-heroes', fetchSuperHeroes,
     {
-      refetchInterval:2000,
-      refetchIntervalInBackground:true
+      onSuccess,
+      onError
     }
   )
-
-// refetchInterval:2000 means query will refetch every 2sec but the refetching will stop if the window loses its focus
-// but if we want to refetch data the data even if background loses its focus then set refetchIntervalInBackground to true
 
   if(isLoading){
     return <h2>Loading...</h2>
